@@ -17,7 +17,11 @@ export default async function handler(req, res) {
 		name: "Test Item",
 		description: "This is a test item.",
 		price: 100,
-		imageUrls: ["https://i.imgur.com/aBa1u0r.jpeg"],
+		imageUrls: [
+			"https://i.imgur.com/aBa1u0r.jpeg",
+			"https://i.imgur.com/5gktXL8.jpeg",
+			"https://i.imgur.com/aBa1u0r.jpeg",
+		],
 		additionalFields: [
 			{
 				name: "Test Field",
