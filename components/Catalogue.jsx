@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 
-export default function Catalogue() {
-	const [items, setItems] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
+export default function Catalogue({ items }) {
+	// const [items, setItems] = useState([]);
+	// const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		fetch("/api/getItems").then((r) => {
-			r.json().then((response) => {
-				console.log(response);
-				setItems(response);
-				setIsLoading(false);
-			});
-		});
-	}, []);
+	// useEffect(() => {
+	// 	fetch("/api/getItems").then((r) => {
+	// 		r.json().then((response) => {
+	// 			console.log(response);
+	// 			setItems(response);
+	// 			setIsLoading(false);
+	// 		});
+	// 	});
+	// }, []);
 
-	if (isLoading) return <div>Loading</div>;
+	// if (isLoading) return <div>Loading</div>;
 	return (
 		<div className="items-justify m-3">
 			{items.map((item) => (

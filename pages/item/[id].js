@@ -1,26 +1,23 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ItemCaraseoul from "../../components/ItemCaraseoul";
+import ItemSchema from "../../models/Item";
 
-export default function ItemListing() {
-	const router = useRouter();
-	const { id } = router.query;
-	const [item, setItem] = useState(null);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		if (!id) return;
-		fetch(`/api/getItem?id=${id}`).then((res) =>
-			res.json().then((data) => {
-				setItem(data);
-				setLoading(false);
-			})
-		);
-	}, [id]);
-	if (loading) return <div>Loading...</div>;
+export default function ItemListing({ item }) {
 	return (
 		<div className="m-3">
 			<ItemCaraseoul item={item} />
 		</div>
 	);
+}
+
+export async function getServerSideProps(context) {
+	const { id } = context.query;
+	const item = await ItemSchema.findById(id).populate("tags");
+	const retItem = JSON.parse(JSON.stringify(item));
+	return {
+		props: {
+			item: retItem,
+		},
+	};
 }

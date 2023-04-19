@@ -1,9 +1,7 @@
-import dbConnect from "../../lib/dbConnect";
 import ItemSchema from "../../models/Item";
 import TagSchema from "../../models/Tag";
 
 export default async function handler(req, res) {
-	await dbConnect();
 	let tag1 = await TagSchema.create({
 		name: "Test Tag 1",
 		description: "This is a test tag.",
