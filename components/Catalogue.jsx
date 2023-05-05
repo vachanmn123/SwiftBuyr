@@ -1,24 +1,11 @@
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Catalogue({ items }) {
-	// const [items, setItems] = useState([]);
-	// const [isLoading, setIsLoading] = useState(true);
-
-	// useEffect(() => {
-	// 	fetch("/api/getItems").then((r) => {
-	// 		r.json().then((response) => {
-	// 			console.log(response);
-	// 			setItems(response);
-	// 			setIsLoading(false);
-	// 		});
-	// 	});
-	// }, []);
-
-	// if (isLoading) return <div>Loading</div>;
 	return (
 		<div className="items-justify m-3">
-			{items.map((item) => (
-				<a href={`/item/${item._id}`}>
+			{items.map((item, index) => (
+				<Link href={`/item/${item._id}`}>
 					<div className="card lg:w-96 md:w-full bg-base-100 shadow-xl inline-block m-3 transition ease-in-out delay-150 hover:scale-110 hover:bg-indigo-500 duration-300">
 						<figure>
 							<img
@@ -34,7 +21,7 @@ export default function Catalogue({ items }) {
 							</h2>
 							<p>{item.description.slice(0, 100)}</p>
 							<div className="card-actions justify-end">
-								{item.tags.map((tag) => (
+								{item.tags.map((tag, index) => (
 									<div className="badge badge-outline">
 										{tag.name}
 									</div>
@@ -42,7 +29,7 @@ export default function Catalogue({ items }) {
 							</div>
 						</div>
 					</div>
-				</a>
+				</Link>
 			))}
 		</div>
 	);

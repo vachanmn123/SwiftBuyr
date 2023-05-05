@@ -1,8 +1,12 @@
+import Link from "next/link";
+
 export default function NavBar() {
 	return (
 		<div className="navbar bg-base-100">
 			<div className="flex-1">
-				<a className="btn btn-ghost normal-case text-xl">SwiftBuyr</a>
+				<Link className="btn btn-ghost normal-case text-xl" href="/">
+					SwiftBuyr
+				</Link>
 			</div>
 			<div className="flex-none">
 				<div className="dropdown dropdown-end">
@@ -40,11 +44,11 @@ export default function NavBar() {
 								{/* TODO: Replace with actual content */}
 							</span>
 							<div className="card-actions">
-								<a href="/cart">
+								<Link href="/cart">
 									<button className="btn btn-primary btn-block">
 										View cart
 									</button>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -63,15 +67,15 @@ export default function NavBar() {
 						className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
 					>
 						<li>
-							<a className="justify-between" href="/profile">
+							<Link className="justify-between" href="/profile">
 								Profile
-							</a>
+							</Link>
 						</li>
 						<li>
-							<a href="/settings">Settings</a>
+							<Link href="/settings">Settings</Link>
 						</li>
 						<li>
-							<a href="/logout">Logout</a>
+							<Link href="/logout">Logout</Link>
 						</li>
 					</ul>
 				</div>
