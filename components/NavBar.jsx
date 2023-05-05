@@ -90,14 +90,14 @@ export default function NavBar() {
 							className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
 						>
 							<li>
-								<strong className="font-bold">
-									<Link
-										className="justify-between"
-										href="/profile"
-									>
+								<Link
+									className="justify-between"
+									href="/profile"
+								>
+									<strong className="font-bold">
 										{session?.user?.name}
-									</Link>
-								</strong>
+									</strong>
+								</Link>
 							</li>
 							<li>
 								<Link href="/settings">Settings</Link>

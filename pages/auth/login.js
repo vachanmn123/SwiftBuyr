@@ -5,6 +5,7 @@ import {
 	getCsrfToken,
 	useSession,
 } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -83,6 +84,17 @@ export default function Login({ providers, csrf }) {
 							className="w-full input input-bordered"
 							placeholder="Enter your password"
 						/>
+					</div>
+					<div>
+						<p>
+							Don't have an account?{" "}
+							<Link
+								href={`/auth/signup?next=${next}`}
+								className="link"
+							>
+								Sign Up
+							</Link>
+						</p>
 					</div>
 					<button
 						type="submit"
