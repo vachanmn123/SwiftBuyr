@@ -1,6 +1,4 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 
 export default function Document() {
 	return (
@@ -12,9 +10,7 @@ export default function Document() {
 				/>
 			</Head>
 			<body>
-				<NavBar />
 				<Main />
-				<Footer />
 				<NextScript />
 			</body>
 		</Html>

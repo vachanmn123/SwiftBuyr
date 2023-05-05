@@ -1,6 +1,28 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function NavBar() {
+	const { data: session, status } = useSession();
+	const router = useRouter();
+	const [loggedIn, setLoggedIn] = useState(status === "authenticated");
+
+	useEffect(() => {
+		setLoggedIn(status === "authenticated");
+	}, [status]);
+
+	/**
+	 *
+	 * @param {MouseEvent} event
+	 */
+	const handleSignout = async (event) => {
+		event.preventDefault();
+		let res = await signOut({
+			redirect: false,
+		});
+	};
+
 	return (
 		<div className="navbar bg-base-100">
 			<div className="flex-1">
@@ -53,32 +75,43 @@ export default function NavBar() {
 						</div>
 					</div>
 				</div>
-				<div className="dropdown dropdown-end">
-					<label
-						tabIndex={0}
-						className="btn btn-ghost btn-circle avatar"
-					>
-						<div className="w-10 rounded-full">
-							<img src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg" />
-						</div>
-					</label>
-					<ul
-						tabIndex={0}
-						className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-					>
-						<li>
-							<Link className="justify-between" href="/profile">
-								Profile
-							</Link>
-						</li>
-						<li>
-							<Link href="/settings">Settings</Link>
-						</li>
-						<li>
-							<Link href="/logout">Logout</Link>
-						</li>
-					</ul>
-				</div>
+				{loggedIn ? (
+					<div className="dropdown dropdown-end">
+						<label
+							tabIndex={0}
+							className="btn btn-ghost btn-circle avatar"
+						>
+							<div className="w-10 rounded-full">
+								<img src="https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg" />
+							</div>
+						</label>
+						<ul
+							tabIndex={0}
+							className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+						>
+							<li>
+								<strong className="font-bold">
+									<Link
+										className="justify-between"
+										href="/profile"
+									>
+										{session?.user?.name}
+									</Link>
+								</strong>
+							</li>
+							<li>
+								<Link href="/settings">Settings</Link>
+							</li>
+							<li>
+								<a onClick={handleSignout}>Logout</a>
+							</li>
+						</ul>
+					</div>
+				) : (
+					<Link href={`/auth/login?next=${router.asPath}`}>
+						<button className="btn ml-2 mr-2">Login</button>
+					</Link>
+				)}
 			</div>
 		</div>
 	);

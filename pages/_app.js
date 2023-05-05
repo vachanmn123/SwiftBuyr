@@ -3,6 +3,8 @@ import Link from "next/link";
 import "../css/globals.css";
 import dbConnect from "../lib/dbConnect";
 import { SessionProvider } from "next-auth/react";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	return (
@@ -12,7 +14,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 			</Head>
 
 			<div className="grid wrapper">
+				<NavBar />
 				<Component {...pageProps} />
+				<Footer />
 			</div>
 		</SessionProvider>
 	);
