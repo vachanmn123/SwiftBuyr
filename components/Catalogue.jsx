@@ -22,7 +22,10 @@ export default function Catalogue({ items }) {
 							<p>{item.description.slice(0, 100)}</p>
 							<div className="card-actions justify-end">
 								{item.tags.map((tag, index) => (
-									<div className="badge badge-outline">
+									<div
+										className="badge badge-outline"
+										key={index}
+									>
 										{tag.name}
 									</div>
 								))}

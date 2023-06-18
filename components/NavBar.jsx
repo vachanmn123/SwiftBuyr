@@ -2,15 +2,47 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 export default function NavBar() {
 	const { data: session, status } = useSession();
 	const router = useRouter();
 	const [loggedIn, setLoggedIn] = useState(status === "authenticated");
+	const [cart, setCart] = useState(null);
+	const [cartTotal, setCartTotal] = useState(0);
 
 	useEffect(() => {
 		setLoggedIn(status === "authenticated");
 	}, [status]);
+
+	useEffect(() => {
+		(async () => {
+			const cartID = Cookies.get("cart");
+			if (cartID) {
+				const res = await fetch(`/api/getCart?cartId=${cartID}`);
+				if (!res.ok) {
+					console.log("Error fetching cart");
+					return;
+				}
+				const resJson = await res.json();
+				setCart(resJson.data);
+			}
+		})();
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const res = await (
+					await fetch(`/api/getCartTotal?cartId=${cart._id}`)
+				).json();
+				setCartTotal(res.data);
+				console.log(res.data);
+			} catch (err) {
+				console.log(err);
+			}
+		})();
+	}, [cart]);
 
 	/**
 	 *
@@ -49,7 +81,7 @@ export default function NavBar() {
 								/>
 							</svg>
 							<span className="badge badge-sm indicator-item">
-								10 {/* TODO: Replace with actual count */}
+								{cart?.items?.length}
 							</span>
 						</div>
 					</label>
@@ -59,10 +91,10 @@ export default function NavBar() {
 					>
 						<div className="card-body">
 							<span className="font-bold text-lg">
-								10 Items{/* TODO: Replace with actual count */}
+								{cart?.items?.length} Items
 							</span>
 							<span className="text-info">
-								Subtotal: $999{" "}
+								Subtotal: ${cartTotal}{" "}
 								{/* TODO: Replace with actual content */}
 							</span>
 							<div className="card-actions">

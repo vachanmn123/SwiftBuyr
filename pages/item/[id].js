@@ -3,8 +3,20 @@ import { useEffect, useState } from "react";
 import ItemCaraseoul from "../../components/ItemCaraseoul";
 import ItemSchema from "../../models/Item";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 export default function ItemListing({ item }) {
+	const handleCartAdd = async () => {
+		const cart = Cookies.get("cart");
+		const res = await fetch(`/api/addToCart?cartId=${cart}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ itemId: item._id }),
+		});
+	};
+
 	return (
 		<div className="m-3 lg:grid lg:grid-cols-2">
 			<div className="">
@@ -30,7 +42,9 @@ export default function ItemListing({ item }) {
 				</div>
 				<div className="mt-3">
 					<button className="btn btn-primary mr-3">Buy Now</button>
-					<button className="btn btn-outline">Add to Cart</button>
+					<button className="btn btn-outline" onClick={handleCartAdd}>
+						Add to Cart
+					</button>
 				</div>
 			</div>
 			<div className="mt-3">
