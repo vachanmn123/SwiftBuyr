@@ -15,6 +15,7 @@ export default function ItemListing({ item }) {
 			},
 			body: JSON.stringify({ itemId: item._id }),
 		});
+		document.getElementById("cartUpdate").click();
 	};
 
 	return (

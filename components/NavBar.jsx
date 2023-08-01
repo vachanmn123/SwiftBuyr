@@ -10,6 +10,32 @@ export default function NavBar() {
 	const [loggedIn, setLoggedIn] = useState(status === "authenticated");
 	const [cart, setCart] = useState(null);
 	const [cartTotal, setCartTotal] = useState(0);
+	const [cartNumItems, setCartNumItems] = useState(0);
+
+	const fetchItemInfo = async (itemID) => {
+		const res = await fetch(`/api/getItem?id=${itemID}`);
+		if (!res.ok) {
+			console.log("Error fetching item");
+			return;
+		}
+		const resJson = await res.json();
+		return resJson.data;
+	};
+
+	const updateCart = async () => {
+		const res = await fetch(`/api/getCart?cartId=${cart._id}`);
+		if (!res.ok) {
+			console.log("Error fetching cart");
+			return;
+		}
+		const resJson = await res.json();
+		for (let i = 0; i < resJson.data.items.length; i++) {
+			resJson.data.items[i].item = await fetchItemInfo(
+				resJson.data.items[i].item
+			);
+		}
+		setCart(resJson.data);
+	};
 
 	useEffect(() => {
 		setLoggedIn(status === "authenticated");
@@ -24,7 +50,12 @@ export default function NavBar() {
 					console.log("Error fetching cart");
 					return;
 				}
-				const resJson = await res.json();
+				let resJson = await res.json();
+				for (let i = 0; i < resJson.data.items.length; i++) {
+					resJson.data.items[i].item = await fetchItemInfo(
+						resJson.data.items[i].item
+					);
+				}
 				setCart(resJson.data);
 			}
 		})();
@@ -37,7 +68,11 @@ export default function NavBar() {
 					await fetch(`/api/getCartTotal?cartId=${cart._id}`)
 				).json();
 				setCartTotal(res.data);
-				console.log(res.data);
+				let sum = 0;
+				for (let i = 0; i < cart.items.length; i++) {
+					sum += cart.items[i].quantity;
+				}
+				setCartNumItems(sum);
 			} catch (err) {
 				console.log(err);
 			}
@@ -81,7 +116,7 @@ export default function NavBar() {
 								/>
 							</svg>
 							<span className="badge badge-sm indicator-item">
-								{cart?.items?.length}
+								{cartNumItems}
 							</span>
 						</div>
 					</label>
@@ -91,8 +126,24 @@ export default function NavBar() {
 					>
 						<div className="card-body">
 							<span className="font-bold text-lg">
-								{cart?.items?.length} Items
+								{cartNumItems} Items
 							</span>
+							{cart?.items?.map((item, index) => (
+								<div
+									className="flex justify-between"
+									key={index}
+								>
+									<span className="text-info">
+										{item.item.name}
+									</span>
+									<span className="text-info">
+										{item.quantity}x
+									</span>
+									<span className="text-info">
+										${item.item.price}
+									</span>
+								</div>
+							))}
 							<span className="text-info">
 								Subtotal: ${cartTotal}{" "}
 								{/* TODO: Replace with actual content */}
@@ -103,6 +154,13 @@ export default function NavBar() {
 										View cart
 									</button>
 								</Link>
+								<button
+									hidden={true}
+									style={{ display: "none" }}
+									className="btn btn-ghost"
+									id="cartUpdate"
+									onClick={updateCart}
+								></button>
 							</div>
 						</div>
 					</div>

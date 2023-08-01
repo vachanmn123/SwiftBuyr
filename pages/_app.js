@@ -10,12 +10,14 @@ import { useEffect } from "react";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	const cart = Cookies.get("cart");
-	useEffect(async () => {
-		if (!cart) {
-			const res = await fetch("/api/createCart");
-			const cartID = await res.json();
-			Cookies.set("cart", cartID.data);
-		}
+	useEffect(() => {
+		(async () => {
+			if (!cart) {
+				const res = await fetch("/api/createCart");
+				const cartID = await res.json();
+				Cookies.set("cart", cartID.data);
+			}
+		})();
 	}, [cart]);
 	return (
 		<SessionProvider session={session}>

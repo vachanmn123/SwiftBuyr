@@ -5,7 +5,7 @@ export default function Catalogue({ items }) {
 	return (
 		<div className="items-justify m-3">
 			{items.map((item, index) => (
-				<Link href={`/item/${item._id}`}>
+				<Link href={`/item/${item._id}`} key={index}>
 					<div className="card lg:w-96 md:w-full bg-base-100 shadow-xl inline-block m-3 transition ease-in-out delay-150 hover:scale-110 hover:bg-indigo-500 duration-300">
 						<figure>
 							<img
